@@ -10,14 +10,16 @@ NOTE: This class is the metaphorical "main method" of your program,
 import java.awt.*;
 import java.awt.event.*;
 
-class YourGameName extends Game {
+class SnakeGame extends Game {
     private Snake snake;
     private Food food;
+    private Wall wall;
 
   public SnakeGame() {
     super("Snake Game",500,500);
     snake = new Snake();
     food = new Food();
+    wall = new Wall();
         KeyListener KeyboardEvent = new KeyListener() {
 
 		@Override
@@ -28,22 +30,14 @@ class YourGameName extends Game {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			int key = e.getKeyCode();
-			switch (key) {
-				case KeyEvent.VK_UP: snake.setDirection(3);
-									 snake.move();
-									 break;
-				case KeyEvent.VK_DOWN: snake.setDirection(1);
-									   snake.move();
-				 					   break;
-				case KeyEvent.VK_RIGHT: snake.setDirection(0);
-				   						snake.move();
-										break;
-				case KeyEvent.VK_LEFT: snake.setDirection(2);
-				   					   snake.move();
-									   break;
-				default: break;
-			}	
+		    int key = e.getKeyCode();
+		    switch (key) {
+		        case KeyEvent.VK_UP: snake.setDirection(3); break;
+		        case KeyEvent.VK_DOWN: snake.setDirection(1); break;
+		        case KeyEvent.VK_RIGHT: snake.setDirection(0); break;
+		        case KeyEvent.VK_LEFT: snake.setDirection(2); break;
+		        default: break;
+		    }   
 		}
 
 		@Override
@@ -51,12 +45,38 @@ class YourGameName extends Game {
 			// TODO Auto-generated method stub
 			keyPressed(e);
 		}
+		
     	
     };
+    
     this.addKeyListener(KeyboardEvent);
     this.setFocusable(true);
 	this.requestFocus();
 	//startGameLoop();
+	
+	final int[] sleepTime = {100}; // Start with 100ms sleep time
+    final int speedIncrease = 2;
+    
+	new Thread(() -> {
+        long lastTime = System.currentTimeMillis();
+        while (true) {
+            try {
+                long currentTime = System.currentTimeMillis();
+                long elapsedTime = currentTime - lastTime;
+                
+                if (elapsedTime >= 1000) { // Every second
+                    sleepTime[0] = Math.max(10, sleepTime[0] - speedIncrease); // Decrease sleep time but don't go below 10ms
+                    lastTime = currentTime; // Reset the last time
+                }
+                
+                Thread.sleep(sleepTime[0]); // Control the speed of the snake based on the current sleep time
+                snake.move(); // Move the snake in its current direction
+                repaint(); // Repaint the game to reflect the updated state
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }).start();
   }
   
 	public void paint(Graphics brush) {
@@ -71,9 +91,10 @@ class YourGameName extends Game {
     	// sample code for printing message for debugging
     	// counter is incremented and this message printed
     	// each time the canvas is repainted
-    	counter++;
+    	
     	brush.setColor(Color.white);
-    	brush.drawString("Counter is " + counter,10,10);
+    	brush.drawString("Counter is " ,10,10);
+    	wall.paint(brush);
   }
   
 	public static void main (String[] args) {
