@@ -18,6 +18,42 @@ class YourGameName extends Game {
     super("Snake Game",500,500);
     snake = new Snake();
     food = new Food();
+        KeyListener KeyboardEvent = new KeyListener() {
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			// TODO Auto-generated method stub
+			keyPressed(e);
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			int key = e.getKeyCode();
+			switch (key) {
+				case KeyEvent.VK_UP: snake.setDirection(3);
+									 snake.move();
+									 break;
+				case KeyEvent.VK_DOWN: snake.setDirection(1);
+									   snake.move();
+				 					   break;
+				case KeyEvent.VK_RIGHT: snake.setDirection(0);
+				   						snake.move();
+										break;
+				case KeyEvent.VK_LEFT: snake.setDirection(2);
+				   					   snake.move();
+									   break;
+				default: break;
+			}	
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			// TODO Auto-generated method stub
+			keyPressed(e);
+		}
+    	
+    };
+    this.addKeyListener(KeyboardEvent);
     this.setFocusable(true);
 	this.requestFocus();
 	//startGameLoop();
