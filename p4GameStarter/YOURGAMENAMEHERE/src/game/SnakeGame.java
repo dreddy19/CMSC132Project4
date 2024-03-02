@@ -96,7 +96,17 @@ class SnakeGame extends Game {
     	brush.drawString("Counter is " ,10,10);
     	wall.paint(brush);
   }
-  
+
+	private class endFrame {
+  		private String endText;
+  		private endFrame(Graphics brush) {
+  	    	brush.setColor(Color.black);
+  	    	brush.fillRect(0,0,width,height);
+  	    	brush.setColor(Color.white);
+  	    	brush.drawString("GAME OVER!",10,10);
+  		}
+  	}
+	
 	public static void main (String[] args) {
    		SnakeGame a = new SnakeGame();
 		a.repaint();
