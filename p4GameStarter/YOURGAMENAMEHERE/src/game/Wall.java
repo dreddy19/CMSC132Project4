@@ -3,52 +3,43 @@ package game;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import game.Wall.InnerWall;
-
 public class Wall extends Polygon {
     // Outer wall constructor
     public Wall() {
+        // Adjusted to be 10 pixels from the edge of a 600x600 frame
         super(new Point[]{
-                new Point(0, 0), // Top-left
-                new Point(500, 0), // Top-right
-                new Point(500, 500), // Bottom-right
-                new Point(0, 500) // Bottom-left
+                new Point(10, 510), // Top-left
+                new Point(510, 10), // Top-right
+                new Point(510, 510), // Bottom-right
+                new Point(10, 510) // Bottom-left
             },
-            new Point(0, 0), // Position (offset) - not really needed but required by constructor
-            0 // Rotation - not needed for a border
+            new Point(0, 0), 
+            0 
         );
     }
 
-    // Method to draw the outer wall
+    // Method to draw inner wall
     public void paint(Graphics brush) {
-        brush.setColor(Color.WHITE); // Set the brush color to white for the outer wall
-        drawPolygon(brush);
+        // Drawing outer wall
+        brush.setColor(Color.BLACK); // Set the color for the outer wall
+        brush.drawRect(10, 10, 510, 510); // Draw the outer wall rectangle
+        
+        // Drawing inner wall by creating and painting an InnerWall instance
         InnerWall innerWall = new InnerWall();
-		innerWall.paint(brush);
+        innerWall.paint(brush);
     }
-    
-    // Helper method to draw the polygon based on its points
-    private void drawPolygon(Graphics brush) {
-        Point[] points = this.getPoints(); // Get the transformed points
 
-        int[] xPoints = new int[points.length];
-        int[] yPoints = new int[points.length];
-        for (int i = 0; i < points.length; i++) {
-            xPoints[i] = (int) points[i].x;
-            yPoints[i] = (int) points[i].y;
-        }
-
-        brush.drawPolygon(xPoints, yPoints, points.length); // Draw (not fill) the polygon with the brush
-    }
+  
 
     // Inner class for the inner wall
     public class InnerWall extends Polygon {
         public InnerWall() {
+            // Centered within the outer wall, assuming a consistent border width
             super(new Point[]{
-                    new Point(1, 1), // Top-left, 1 pixel inside
-                    new Point(499, 1), // Top-right, 1 pixel inside
-                    new Point(499, 499), // Bottom-right, 1 pixel inside
-                    new Point(1, 499) // Bottom-left, 1 pixel inside
+                    new Point(15, 15), // Adjusted for inner wall to be centered
+                    new Point(505, 15), // and to maintain a consistent border width
+                    new Point(505, 505),
+                    new Point(15, 505)
                 },
                 new Point(0, 0), // Position (offset) - not really needed
                 0 // Rotation - not needed for a border
@@ -56,10 +47,9 @@ public class Wall extends Polygon {
         }
 
         // Method to draw the inner wall
-        
         public void paint(Graphics brush) {
             brush.setColor(Color.WHITE); // Set the brush color to white for the inner wall
-            drawPolygon(brush); // Use the outer class's method to draw the inner wall
+            brush.drawRect(15, 15, 505, 505); // Draw the inner wall rectangle
         }
     }
 }
