@@ -1,5 +1,5 @@
 package game;
 
 public interface CalculateScore {
-	public int calcScore();
+	public int calcScore(int score);
 }
