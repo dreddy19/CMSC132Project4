@@ -14,6 +14,7 @@ class SnakeGame extends Game {
     private Snake snake;
     private Food food;
     private Wall wall;
+    private endFrame endFrame;
 
   public SnakeGame() {
     super("Snake Game",500,500);
@@ -118,7 +119,8 @@ class SnakeGame extends Game {
   	    	brush.setColor(Color.black);
   	    	brush.fillRect(0,0,width,height);
   	    	brush.setColor(Color.white);
-  	    	brush.drawString("GAME OVER!",10,10);
+		endText = "GAME OVER!";
+  	    	brush.drawString(endText,10,10);
   		}
   	}
 	
