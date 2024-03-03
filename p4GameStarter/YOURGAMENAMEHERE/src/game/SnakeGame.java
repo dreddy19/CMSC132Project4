@@ -88,6 +88,7 @@ class SnakeGame extends Game {
                 	// endFrame = new EndFrame();
                 	// System.exit(0);
 			end = true;
+			break;
                     
                 }
                 
