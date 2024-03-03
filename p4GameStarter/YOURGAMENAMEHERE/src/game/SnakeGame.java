@@ -14,12 +14,12 @@ class SnakeGame extends Game {
     private Snake snake;
     private Food food;
     private Wall wall;
-    private EndFrame endFrame = new EndFrame();
+    private EndFrame endFrame;
     private boolean end;
     private int count = 0;
 
   public SnakeGame() {
-    super("Snake Game",500,500);
+    super("Snake Game",600,600);
     snake = new Snake();
     food = new Food();
     wall = new Wall();
@@ -60,13 +60,13 @@ class SnakeGame extends Game {
 	//startGameLoop();
 	
 	final int[] sleepTime = {100}; // Start with 100ms sleep time
-    final int speedIncrease = 3;
+    final int speedIncrease = 2;
     
 	new Thread(() -> {
-		boolean check = false;
+		
 		
         long lastTime = System.currentTimeMillis();
-        while (true) {
+        while (!end) {
             try {
                 long currentTime = System.currentTimeMillis();
                 long elapsedTime = currentTime - lastTime;
@@ -85,10 +85,9 @@ class SnakeGame extends Game {
                 
                 if (snake.collision(wall)) {
                     
-                	// endFrame = new EndFrame();
-                	// System.exit(0);
-			end = true;
-			break;
+                	end = true; 
+                    break; 
+			
                     
                 }
                 
@@ -102,33 +101,42 @@ class SnakeGame extends Game {
     }).start();
   }
   
-	public void paint(Graphics brush) {
-    	brush.setColor(Color.black);
-    	brush.fillRect(0,0,width,height);
-   
-    	brush.setColor(Color.green);
-    	brush.fillRect((int)snake.position.getX(), (int)snake.position.getY(), 25, 25);
+	
+		
+		public void paint(Graphics brush) {
+		    if (!end) {
+		    	brush.setColor(Color.black);
+		    	brush.fillRect(0,0,width,height);
+		   
+		    	brush.setColor(Color.green);
+		    	brush.fillRect((int)snake.position.getX(), (int)snake.position.getY(), 25, 25);
+		    	
+		    	brush.setColor(Color.red);
+		    	brush.fillRect((int)food.position.getX(), (int)food.position.getY(), 20, 20);
+		    	// sample code for printing message for debugging
+		    	// counter is incremented and this message printed
+		    	// each time the canvas is repainted
+		    	
+		    	brush.setColor(Color.white);
+		    	
+		    	wall.paint(brush);
+		    } else {
+		        if (endFrame == null) {
+		            endFrame = new EndFrame(); // Initialize EndFrame if not already done
+		        }
+		        endFrame.paint(brush); // Call to EndFrame's paint method to display end game screen
+		    }
+		
     	
-    	brush.setColor(Color.red);
-    	brush.fillRect((int)food.position.getX(), (int)food.position.getY(), 20, 20);
-    	// sample code for printing message for debugging
-    	// counter is incremented and this message printed
-    	// each time the canvas is repainted
-    	
-    	brush.setColor(Color.white);
-    	brush.drawString("Counter is " ,10,10);
-    	wall.paint(brush);
-
-	if (end) {
-	   endFrame = new EndFrame(brush);
-	}
+	
   }
 
 	private class EndFrame {
 	    private String endText;
 	    
+	    
 	    // Method to draw the end game text
-	    private EndFrame(Graphics brush) {
+	    private void paint(Graphics brush) {
 	        brush.setColor(Color.black);
 	        brush.fillRect(0, 0, width, height);
 	        brush.setColor(Color.white);
