@@ -15,6 +15,7 @@ class SnakeGame extends Game {
     private Food food;
     private Wall wall;
     private EndFrame endFrame = new EndFrame();
+    private boolean end;
     private int count = 0;
 
   public SnakeGame() {
@@ -22,7 +23,7 @@ class SnakeGame extends Game {
     snake = new Snake();
     food = new Food();
     wall = new Wall();
- 
+    end = false;
     
         KeyListener KeyboardEvent = new KeyListener() {
 
@@ -84,8 +85,9 @@ class SnakeGame extends Game {
                 
                 if (snake.collision(wall)) {
                     
-                	endFrame = new EndFrame();
-                	System.exit(0);
+                	// endFrame = new EndFrame();
+                	// System.exit(0);
+			end = true;
                     
                 }
                 
@@ -115,13 +117,17 @@ class SnakeGame extends Game {
     	brush.setColor(Color.white);
     	brush.drawString("Counter is " ,10,10);
     	wall.paint(brush);
+
+	if (end) {
+	   endFrame = new EndFrame(brush);
+	}
   }
 
 	private class EndFrame {
 	    private String endText;
 	    
 	    // Method to draw the end game text
-	    private void draw(Graphics brush) {
+	    private EndFrame(Graphics brush) {
 	        brush.setColor(Color.black);
 	        brush.fillRect(0, 0, width, height);
 	        brush.setColor(Color.white);
