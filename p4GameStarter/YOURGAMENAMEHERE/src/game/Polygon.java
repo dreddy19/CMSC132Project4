@@ -73,6 +73,15 @@ class Polygon {
   }
   
   public void rotate(int degrees) {rotation = (rotation+degrees)%360;}
+
+   public boolean collision(Polygon other) {
+	  for (Point p : other.getPoints()) {
+		  if (contains(p)) {
+			  return true;
+		  }
+	  }
+	  return false;
+  }
   
   /*
   The following methods are private access restricted because, as this access
