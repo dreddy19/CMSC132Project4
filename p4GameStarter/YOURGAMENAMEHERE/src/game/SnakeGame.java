@@ -14,13 +14,16 @@ class SnakeGame extends Game {
     private Snake snake;
     private Food food;
     private Wall wall;
-    private endFrame endFrame;
+    private EndFrame endFrame = new EndFrame();
+    private int count = 0;
 
   public SnakeGame() {
     super("Snake Game",500,500);
     snake = new Snake();
     food = new Food();
     wall = new Wall();
+ 
+    
         KeyListener KeyboardEvent = new KeyListener() {
 
 		@Override
@@ -80,9 +83,10 @@ class SnakeGame extends Game {
                 }
                 
                 if (snake.collision(wall)) {
-                    // Replace food with a new food object
                     
-                    // Optionally increase score or snake size here
+                	endFrame = new EndFrame();
+                	System.exit(0);
+                    
                 }
                 
                 Thread.sleep(sleepTime[0]); // Control the speed of the snake based on the current sleep time
@@ -113,16 +117,20 @@ class SnakeGame extends Game {
     	wall.paint(brush);
   }
 
-	private class endFrame {
-  		private String endText;
-  		private endFrame(Graphics brush) {
-  	    	brush.setColor(Color.black);
-  	    	brush.fillRect(0,0,width,height);
-  	    	brush.setColor(Color.white);
-		endText = "GAME OVER!";
-  	    	brush.drawString(endText,10,10);
-  		}
-  	}
+	private class EndFrame {
+	    private String endText;
+	    
+	    // Method to draw the end game text
+	    private void draw(Graphics brush) {
+	        brush.setColor(Color.black);
+	        brush.fillRect(0, 0, width, height);
+	        brush.setColor(Color.white);
+	        CalculateScore calculate = (score) -> score * 10;
+	        int points = calculate.calcScore(count);
+	        endText = "GAME OVER! Your Score was: " + points;
+	        brush.drawString(endText, 10, 10);
+	    }
+	}
 	
 	public static void main (String[] args) {
    		SnakeGame a = new SnakeGame();
