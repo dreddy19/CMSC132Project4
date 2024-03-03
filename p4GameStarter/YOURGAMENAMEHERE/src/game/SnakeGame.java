@@ -55,9 +55,11 @@ class SnakeGame extends Game {
 	//startGameLoop();
 	
 	final int[] sleepTime = {100}; // Start with 100ms sleep time
-    final int speedIncrease = 2;
+    final int speedIncrease = 3;
     
 	new Thread(() -> {
+		boolean check = false;
+		
         long lastTime = System.currentTimeMillis();
         while (true) {
             try {
@@ -67,6 +69,19 @@ class SnakeGame extends Game {
                 if (elapsedTime >= 1000) { // Every second
                     sleepTime[0] = Math.max(10, sleepTime[0] - speedIncrease); // Decrease sleep time but don't go below 10ms
                     lastTime = currentTime; // Reset the last time
+                }
+                
+                if (snake.collision(food)) {
+                    // Replace food with a new food object
+                    food = new Food();
+                    // Optionally increase score or snake size here
+                    count++;
+                }
+                
+                if (snake.collision(wall)) {
+                    // Replace food with a new food object
+                    
+                    // Optionally increase score or snake size here
                 }
                 
                 Thread.sleep(sleepTime[0]); // Control the speed of the snake based on the current sleep time
